@@ -38,9 +38,11 @@ env "update temp dir" do
 end
 
 
-powershell 'install chocolatey' do
-  cwd ENV['TEMP']
-  code "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
+powershell_script 'install chocolatey' do
+  cwd Chef::Config[:file_cache_path]
+  code <<-EOH
+iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))  
+  EOH
   not_if { ::File.exist?(::File.join(node['chocolatey']['bin_path'], 'chocolatey.bat')) }
 end
 
