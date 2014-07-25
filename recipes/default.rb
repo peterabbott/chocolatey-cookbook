@@ -39,9 +39,9 @@ end
 
 
 powershell_script 'install chocolatey' do
-  cwd ENV['TEMP']
+  cwd Chef::Config[:file_cache_path]
   code <<-EOH
-iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))  
+((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))  > "#{Chef::Config[:file_cache_path]}/install.ps1"
   EOH
   not_if { ::File.exist?(::File.join(node['chocolatey']['bin_path'], 'chocolatey.bat')) }
 end
