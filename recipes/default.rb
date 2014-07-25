@@ -39,7 +39,7 @@ end
 
 
 powershell_script 'install chocolatey' do
-  cwd Chef::Config[:file_cache_path]
+  cwd ENV['TEMP']
   code <<-EOH
 iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))  
   EOH
