@@ -22,6 +22,22 @@ return 'platform not supported' if node['platform_family'] != 'windows'
 
 include_recipe 'powershell'
 
+
+env "update temp dir" do
+	key_name 'TEMP' 
+	value 'c:\temp'
+	only_if { node['chocolatey']['temp_dir'] } 
+	action :modify
+end
+
+env "update temp dir" do
+	key_name 'TMP' 
+	value 'c:\temp'
+	only_if { node['chocolatey']['temp_dir'] } 
+	action :modify
+end
+
+
 powershell 'install chocolatey' do
   cwd ENV['TEMP']
   code "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
