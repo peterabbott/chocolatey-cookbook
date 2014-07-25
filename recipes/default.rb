@@ -23,6 +23,7 @@ return 'platform not supported' if node['platform_family'] != 'windows'
 include_recipe 'powershell'
 
 powershell 'install chocolatey' do
+  cwd ENV['TEMP']
   code "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
   not_if { ::File.exist?(::File.join(node['chocolatey']['bin_path'], 'chocolatey.bat')) }
 end
